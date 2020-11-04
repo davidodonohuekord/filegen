@@ -18,8 +18,8 @@
       <input type="text" v-model="addition">
       <button @click="addItem(optionName)">Add item</button>
     </div> -->
-    <button @click="generateFiles" :disabled="!validOptions">Generate files</button>
   </div>
+  <button style="margin: 0 auto; display: block;padding: 10px 15px;" @click="generateFiles" :disabled="!validOptions">Generate files</button>
   </div>
 </template>
 
@@ -169,5 +169,6 @@ import Option from './components/Option';
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  max-height: 90vh;
 }
 </style>
