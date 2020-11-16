@@ -7,7 +7,7 @@
     <input type="text" placeholder="Shooter name" v-model="shooterName"/><br>
     </div>
     <!-- options -->
-    <Option v-for="(optionName, index) in Object.keys(options)" :optionName="optionName" :optionDetails="options[optionName]" :key="index" @remove-item="removeItem" @add-item="addItem"></Option>
+    <Option v-for="(optionName, index) in Object.keys(options)" :optionName="optionName" :optionDetails="options[optionName]" :key="index" @set-all="setAll" @remove-item="removeItem" @add-item="addItem"></Option>
     <!-- <div v-for="(optionName, optionIndex) in Object.keys(options)" :key="optionIndex">
       <h3>{{optionName}}</h3>
       <span v-for="(item, itemIndex) in options[optionName]" :key="itemIndex">
@@ -81,6 +81,11 @@ import Option from './components/Option';
       }
     },
     methods: {
+      setAll(name, bool) {
+        for (let i = 0; i < this.options[name].length; i++) {
+          this.options[name][i].value = bool;
+        }
+      },
       removeItem(optionName, index){
         //delete this.options[sensors]
         this.options[optionName].splice(index, 1);
