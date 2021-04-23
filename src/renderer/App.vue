@@ -104,7 +104,8 @@ import Option from './components/Option';
 
         var optionKeys = Object.keys(this.options);
         var list = this.generateFileNames([""], optionKeys);
-        var dir = "./generated_files"
+        const homeDir = require('os').homedir();
+        const dir = `${homeDir}\\Desktop\\generated_files`;
         if (!fs.existsSync(dir)){
           fs.mkdirSync(dir);
         }
