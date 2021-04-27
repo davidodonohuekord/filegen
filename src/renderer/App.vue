@@ -26,9 +26,9 @@
 <script>
 
 var fs = require('fs');
-const electron = require('electron');
+// const electron = require('electron');
 //enableRemoteModule: true
-const dialog = electron.remote.dialog;
+// const dialog = electron.remote.dialog;
 import Option from './components/Option';
 
 // LAST_SHOTS__SENSOR_1_OPTION_5_HOUSING__147_GRAIN_990FPS__6400HZ__82MS__G17G5__DOMINIC__23_10_2020.log
@@ -39,8 +39,9 @@ import Option from './components/Option';
     },
     data() {
       return {
+        // name of the shooter
         shooterName: null,
-        addition: null,
+        // default options
         options: {
           ShotType: [
             {name: "LAST_SHOTS", value: false},
@@ -81,25 +82,31 @@ import Option from './components/Option';
       }
     },
     methods: {
+      // toggle all values in a single option
       setAll(name, bool) {
         for (let i = 0; i < this.options[name].length; i++) {
           this.options[name][i].value = bool;
         }
       },
+      // remove an option
       removeItem(optionName, index){
         //delete this.options[sensors]
         this.options[optionName].splice(index, 1);
         this.saveSettings();
       },
+      // add an item to an option
       addItem(optionName, item){
         this.options[optionName].push({
+          // replace spaces with underscores
           name: item.replace(" ", "_").toUpperCase(),
+          // set the value to true by default
           value: true
           })
         this.saveSettings();
       },
       generateFiles(){
         var date = new Date();
+        // generate a string for date in the format DD_MM_YYYY
         var dateStamp = date.getDate() + "_" + (date.getMonth() + 1) + "_" + date.getFullYear();
 
         var optionKeys = Object.keys(this.options);
@@ -116,6 +123,7 @@ import Option from './components/Option';
           fs.closeSync(fs.openSync(filepath, 'w'));
         }
       },
+      // recursively constructs an array containing every combination of selected option elements
       generateFileNames(stringArray, keysLeft){
         if (keysLeft.length == 0){
           return stringArray
@@ -130,25 +138,30 @@ import Option from './components/Option';
               }
             }
           }
+          // remove the current option name from the keysLeft list
           keysLeft = keysLeft.slice(1)
+          // continue with the remaining keys
           return this.generateFileNames(rtn, keysLeft);
         }
       },
+      // local storage of changes to default data
       saveSettings(){
         localStorage.filegenData = JSON.stringify(this.options);
       }
     },
     computed: {
       validOptions() {
+        // make sure a name has been entered
         if (this.shooterName == undefined || this.shooterName == ""){
           return false;
         }
         var optionKeys = Object.keys(this.options);
         
-        // for each measure
+        // for each option
         for (let i = 0; i < optionKeys.length; i++){
           var validated = false;
           // for each element in the measure
+          // make sure at least one of them is selected
           for (let j = 0; j < this.options[optionKeys[i]].length; j++){
             if (this.options[optionKeys[i]][j].value){
               validated = true;
@@ -163,6 +176,7 @@ import Option from './components/Option';
     },
     mounted(){
       if(localStorage.filegenData){
+        // read in the custom data
         this.options = JSON.parse(localStorage.filegenData);
       }
     }

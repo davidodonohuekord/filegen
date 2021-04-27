@@ -19,6 +19,7 @@
       props:['optionName', 'optionDetails'],
       data(){
           return{
+              // name of the new element
               addition: null
           }
       },
